@@ -14,8 +14,8 @@ public class Collaborateur {
 	String photo;
 	ZonedDateTime dateCreation;
 	Boolean actif;
-	
-	
+	String intitulePoste;
+	Departement departement;
 	
 	public Collaborateur(String matricule, String nom, String prenom,
 			LocalDate dateNaissance, String Adresse, String numeroSecu,
