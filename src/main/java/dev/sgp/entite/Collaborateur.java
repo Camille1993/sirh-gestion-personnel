@@ -7,15 +7,33 @@ public class Collaborateur {
 	String matricule;
 	String nom;
 	String prenom;
-	LocalDate date_de_naissance;
+	LocalDate dateNaissance;
 	String Adresse;
-	String Numero_de_securite_sociale;
+	String NumeroSecu;
 	String emailPro;
 	String photo;
-	ZonedDateTime dateHeureCreation;
+	ZonedDateTime dateCreation;
 	Boolean actif;
 	
 	
+	
+	public Collaborateur(String matricule, String nom, String prenom,
+			LocalDate dateNaissance, String Adresse, String numeroSecu,
+			String emailPro, String photo, ZonedDateTime dateCreation,
+			boolean actif){
+		this.matricule = matricule;
+		this.nom = nom;
+		this.prenom =prenom;
+		this.dateNaissance = dateNaissance;
+		this.Adresse = Adresse;
+		this.NumeroSecu = numeroSecu;
+		this.emailPro=emailPro;
+		this.photo=photo;
+		this.dateCreation= dateCreation;
+		this.actif = actif;
+		
+	}
+			
 	public String getMatricule() {
 		return matricule;
 	}
@@ -40,11 +58,11 @@ public class Collaborateur {
 	}
 	
 	
-	public LocalDate getDate_de_naissance() {
-		return date_de_naissance;
+	public LocalDate getDateNaissance() {
+		return dateNaissance;
 	}
-	public void setDate_de_naissance(LocalDate date_de_naissance) {
-		this.date_de_naissance = date_de_naissance;
+	public void setDateNaissance(LocalDate dateNaissance) {
+		this.dateNaissance = dateNaissance;
 	}
 	
 	
@@ -56,11 +74,11 @@ public class Collaborateur {
 	}
 	
 	
-	public String getNumero_de_securite_sociale() {
-		return Numero_de_securite_sociale;
+	public String getNumeroSecu() {
+		return NumeroSecu;
 	}
-	public void setNumero_de_securite_sociale(String numero_de_securite_sociale) {
-		Numero_de_securite_sociale = numero_de_securite_sociale;
+	public void setNumeroSecu(String NumeroSecu) {
+		this.NumeroSecu = NumeroSecu;
 	}
 	
 	
@@ -80,11 +98,11 @@ public class Collaborateur {
 	}
 	
 	
-	public ZonedDateTime getDateHeureCreation() {
-		return dateHeureCreation;
+	public ZonedDateTime getDateCreation() {
+		return dateCreation;
 	}
-	public void setDateHeureCreation(ZonedDateTime dateHeureCreation) {
-		this.dateHeureCreation = dateHeureCreation;
+	public void setDateCreation(ZonedDateTime dateHeureCreation) {
+		this.dateCreation = dateHeureCreation;
 	}
 	
 	

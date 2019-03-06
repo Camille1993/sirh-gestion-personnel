@@ -1,64 +1,59 @@
 package dev.sgp.web;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+
+import dev.sgp.entite.Collaborateur;
+import dev.sgp.service.CollaborateurService;
+import dev.sgp.util.Constantes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
 public class EditerCollaborateursController extends HttpServlet {
-	@Override
+
+	public static final String VUE = "/WEB-INF/views/collab/newCollaborateur.jsp";
+	private CollaborateurService collabService =Constantes.COLLAB_SERVICE;
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String matriculeParam = req.getParameter("matricule");
-		String titreParam = req.getParameter("titre");
-		String nomParam = req.getParameter("nom");
-		String prenomParam = req.getParameter("prenom");
-		resp.setContentType("text/html");
-
-		if (matriculeParam == null){
-			resp.sendError(400, "Un matricule est attendu");
-		}else{
-			resp.getWriter().write("Matricule =" + matriculeParam);	
-		}
-
+		this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
 	}
 
-	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String matriculeParam = req.getParameter("matricule");
-		String titreParam = req.getParameter("titre");
-		String nomParam = req.getParameter("nom");
-		String prenomParam = req.getParameter("prenom");
-		String paramNull="";
 
+		String nom = req.getParameter("nom");
+		String prenom = req.getParameter("prenom");
+		LocalDate dateNaissance = LocalDate.parse(req.getParameter("dateNaissance"));
+		String adresse = req.getParameter("adresse");
+		String numeroSecu = req.getParameter("numeroSecu");
 
-		if (matriculeParam == null ){
-			paramNull += "matricule, ";
-		}
+		String photo = "/sgp/asset/phot_profil.png";
+		String Matricule = nom.substring(0, 1) + prenom.substring(0, 1) + (Math.random() * (9999));
+		String emailPro = prenom + "." + nom + "@societe.com";
+		ZonedDateTime dateCreation = ZonedDateTime.now();
+		boolean actif = true;
 
-		if (titreParam == null ){
-			paramNull += "titre, ";
+		if (checkForm("nom") && checkForm("prenom") && checkForm("adresse")) {
+			collabService.sauvegarderCollaborateur(
+					new Collaborateur(Matricule, nom, prenom, dateNaissance, adresse, numeroSecu, 
+							emailPro, photo, dateCreation, actif));
+			resp.sendRedirect("/sgp/collaborateurs/lister");
+		} else {
+			resp.sendError(400, "Des champs contiennent des caractère spéciaux");
 		}
-
-		if (nomParam == null ){
-			paramNull += "nom, ";
-		}
-
-		if (prenomParam == null ){
-			paramNull += "prenom.";
-		}
-		if(matriculeParam == null || titreParam == null || nomParam== null || prenomParam ==null){
-			resp.sendError(400, "Les paramètres suivants sont incorrects :" + paramNull);
-		}
-
-		if(matriculeParam != null && titreParam != null && nomParam!= null && prenomParam !=null){
-			resp.setStatus(201);
-			resp.getWriter().write("Creation d'un collaborateur avec les informations suivantes :"
-					+ "<ul>"
-					+ "<li> matricule= "+ matriculeParam +", titre= " + titreParam + ", nom= " + nomParam + ", prenom= "+prenomParam +"</li>"
-					+ "</ul>");
-		}
+		
 	}
 
+	boolean checkForm(String data) {
+		boolean result = true;
+
+		if (data.matches(".*[/+<>@].*")) {
+			result = false;
+		}
+		return result;
+	}
 }
